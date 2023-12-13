@@ -1,0 +1,88 @@
+const int pinSensorSonido = A0;    // Pin analógico del sensor de sonido
+const int pinZumbador = 13;        // Pin digital para el zumbador
+const int umbralSonido1 = 120;    // Umbral de sonido para el primer nivel
+const int umbralSonido2 = 140;    // Umbral de sonido para el segundo nivel
+const int umbralSonido3 = 160;    // Umbral de sonido para el tercer nivel
+const int umbralSonido4 = 180;    // Umbral de sonido para el cuarto nivel
+const int umbralSonido5 = 200;    // Umbral de sonido para el quinto nivel
+
+const int LED1 = 7;               // Pin para el primer LED
+const int LED2 = 6;               // Pin para el segundo LED
+const int LED3 = 5;               // Pin para el tercer LED
+const int LED4 = 4;               // Pin para el cuarto LED
+const int LED5 = 3;               // Pin para el quinto LED
+
+void setup() {
+  pinMode(pinSensorSonido, INPUT);
+  pinMode(pinZumbador, OUTPUT);
+  
+  pinMode(LED1, OUTPUT);
+  pinMode(LED2, OUTPUT);
+  pinMode(LED3, OUTPUT);
+  pinMode(LED4, OUTPUT);
+  pinMode(LED5, OUTPUT);
+  
+  Serial.begin(9600);
+}
+
+void loop() {
+  int valorSonido = analogRead(pinSensorSonido);
+
+  if (valorSonido > umbralSonido5) {
+    Serial.println("Sonido detectado: Nivel 5");
+    encenderLED(LED5);
+    encenderLED(LED4);
+    encenderLED(LED3);
+    encenderLED(LED2);
+    encenderLED(LED1);
+    activarZumbador();
+  } else if (valorSonido > umbralSonido4) {
+    Serial.println("Sonido detectado: Nivel 4");
+    encenderLED(LED4);
+    encenderLED(LED3);
+    encenderLED(LED2);
+    encenderLED(LED1);
+    activarZumbador();
+  } else if (valorSonido > umbralSonido3) {
+    Serial.println("Sonido detectado: Nivel 3");
+    encenderLED(LED3);
+    encenderLED(LED2);
+    encenderLED(LED1);
+    activarZumbador();
+  } else if (valorSonido > umbralSonido2) {
+    Serial.println("Sonido detectado: Nivel 2");
+    encenderLED(LED2);
+    encenderLED(LED1);
+    activarZumbador();
+  } else if (valorSonido > umbralSonido1) {
+    Serial.println("Sonido detectado: Nivel 1");
+    encenderLED(LED1);
+    activarZumbador();
+  } else {
+    apagarLEDs();
+    desactivarZumbador();
+    Serial.println("Nivel de sonido bajo");
+  }
+
+  delay(100);
+}
+
+void encenderLED(int pinLED) {
+  digitalWrite(pinLED, HIGH);
+}
+
+void apagarLEDs() {
+  digitalWrite(LED1, LOW);
+  digitalWrite(LED2, LOW);
+  digitalWrite(LED3, LOW);
+  digitalWrite(LED4, LOW);
+  digitalWrite(LED5, LOW);
+}
+
+void activarZumbador() {
+  digitalWrite(pinZumbador, HIGH);
+}
+
+void desactivarZumbador() {
+  digitalWrite(pinZumbador, LOW);
+}
